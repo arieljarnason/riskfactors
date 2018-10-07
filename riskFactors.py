@@ -9,12 +9,13 @@ def openfile(filename):
         with open(filename, 'r', encoding='utf-8') as dataFile:
             for line in dataFile: 
                 wordString += line # add each line of words to the word string 
+            print_form()
             return wordString
 
     except FileNotFoundError:
         print_error(filename)
         print_form()
-   
+        quit()
 
 def make_list(string_in):
     """Converts string to list seperated by returns
@@ -52,53 +53,49 @@ def make_list(string_in):
     heart_disease[1:-1] = [float(i) for i in heart_disease[1:-1]]
     motor_vehicle[1:-1] = [float(i) for i in motor_vehicle[1:-1]]
     teen_birthrate[1:-1] = [float(i) for i in teen_birthrate[1:-1]]
-    
-    
 
     #send items to find the min and max
-    find_min_max(states, heart_disease, motor_vehicle, teen_birthrate, adult_smoking, adult_obesity)
+    return states, heart_disease, motor_vehicle, teen_birthrate, adult_smoking, adult_obesity
 
 def find_min_max(states, heart_disease, motor_vehicle, teen_birthrate, adult_smoking, adult_obesity):
     """Finds the min and max in each list of words, as well
     as the index place in order to find correct correlating
     state. """
-
+    x = ":"
     #heart disease:
     hd_max_nr = max(heart_disease[1:-1])
     hd_min_nr = min(heart_disease[1:-1])
     hd_max_st = states[heart_disease.index((max(heart_disease[1:-1])))]
     hd_min_st = states[heart_disease.index((min(heart_disease[1:-1])))]
-    print_list(heart_disease[0], hd_min_st, hd_min_nr, hd_max_st, hd_max_nr)
+    print_list(heart_disease[0]+x, hd_min_st, hd_min_nr, hd_max_st, hd_max_nr)
 
     #Motor vehicle death rate:
-    mv_max_nr = max(motor_vehicle[1:-1])
-    mv_min_nr = min(motor_vehicle[1:-1])
+    mv_max_nr = round(max(motor_vehicle[1:-1]), 1)
+    mv_min_nr = round(min(motor_vehicle[1:-1]), 1)
     mv_max_st = states[motor_vehicle.index((max(motor_vehicle[1:-1])))]
     mv_min_st = states[motor_vehicle.index((min(motor_vehicle[1:-1])))]
-    print_list(motor_vehicle[0], mv_min_st, mv_min_nr, mv_max_st, mv_max_nr)
+    print_list(motor_vehicle[0]+x, mv_min_st, mv_min_nr, mv_max_st, mv_max_nr)
 
     #Teen Birth rate:
-    tb_max_nr = max(teen_birthrate[1:-1])
-    tb_min_nr = min(teen_birthrate[1:-1])
+    tb_max_nr = round(max(teen_birthrate[1:-1]), 1)
+    tb_min_nr = round(min(teen_birthrate[1:-1]), 1)
     tb_max_st = states[teen_birthrate.index((max(teen_birthrate[1:-1])))]
     tb_min_st = states[teen_birthrate.index((min(teen_birthrate[1:-1])))]
-    print_list(teen_birthrate[0], tb_min_st, tb_min_nr, tb_max_st, tb_max_nr)
+    print_list(teen_birthrate[0]+x, tb_min_st, tb_min_nr, tb_max_st, tb_max_nr)
 
     #Adult smoking: 
-    as_max_nr = max(adult_smoking[1:-1])
-    as_min_nr = min(adult_smoking[1:-1])
+    as_max_nr = round(max(adult_smoking[1:-1]), 1)
+    as_min_nr = round(min(adult_smoking[1:-1]), 1)
     as_max_st = states[adult_smoking.index((max(adult_smoking[1:-1])))]
     as_min_st = states[adult_smoking.index((min(adult_smoking[1:-1])))]
-    print_list(adult_smoking[0], as_min_st, as_min_nr, as_max_st, as_max_nr)
+    print_list(adult_smoking[0]+x, as_min_st, as_min_nr, as_max_st, as_max_nr)
 
     #Adult Obesity:
-    ao_max_nr = max(adult_obesity[1:-1])
-    ao_min_nr = min(adult_obesity[1:-1])
+    ao_max_nr = round(max(adult_obesity[1:-1]), 1)
+    ao_min_nr = round(min(adult_obesity[1:-1]), 1)
     ao_max_st = states[adult_obesity.index((max(adult_obesity[1:-1])))]
     ao_min_st = states[adult_obesity.index((min(adult_obesity[1:-1])))]
-    print_list(adult_obesity[0], ao_min_st, ao_min_nr, ao_max_st, ao_max_nr)
-
-
+    print_list(adult_obesity[0]+x, ao_min_st, ao_min_nr, ao_max_st, ao_max_nr)
 
 def print_error(filename):
 
@@ -110,24 +107,22 @@ def print_form():
     print('{:<33}{:<21}{:>6}{:6}{:<15}{:>6}'.format("Indicator","Min", '','', "Max", ''))
     print('-' * 87)
 
-
 def print_list(col_1, col_2, col_3, col_4, col_5):
     
     print('{:<33}{:<21}{:>6}{:6}{:<15}{:>6}'.format(col_1, col_2, col_3,'', col_4, col_5))
 
-
-
-
-
 def main():
-    filename = input("Enter name of file: ")
-    print_form()
+    filename = input("Enter filename containing csv data: ")
+    #enter name of file
+
     string = openfile(filename)
-    make_list(string)
+    #make string out of file
 
+    states, heart_disease, motor_vehicle, teen_birthrate, adult_smoking, adult_obesity = make_list(string)
+    #sends string to make_list, turns into list of items
 
-
-
+    find_min_max(states, heart_disease, motor_vehicle, teen_birthrate, adult_smoking, adult_obesity)
+    #takes list of floats and sends to find_min_max to find the smallest/largest floats
 
 
 main()
